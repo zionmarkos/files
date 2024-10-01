@@ -1,0 +1,53 @@
+1. Why is it not needed to have #include <string> in Course.cpp?
+The file Course.cpp includes Course.hpp, which already contains the #include <string> directive. Since Course.hpp
+ is included, it brings along all necessary headers, including <string>, to the Course.cpp file. Therefore, 
+ explicitly adding #include <string> again in Course.cpp would be redundant.
+ 2. a. What is the difference between an inline function and a regular function?
+Inline function: When a function is marked as inline, the compiler attempts to replace the function call with the 
+actual function code to avoid the overhead of a function call. This is beneficial for very small, frequently used 
+functions.
+Regular function: A regular function involves the overhead of a function call. The program jumps to the function’s 
+code, executes it, and then returns to the point where it was called.
+2. b. When should you use an inline function?
+Inline functions are useful when:
+The function is small, such as simple accessors or mutators.
+The function is called frequently, and the overhead of function calls should be minimized. However, overusing inline
+ functions can increase the size of the binary due to code duplication.
+3. Why is this-> used in setCourseName and setDepartment but not in setCredit?
+this-> is used in setCourseName and setDepartment to explicitly reference the class members courseName and department
+, distinguishing them from the parameters with the same names. In contrast, setCredit uses different parameter names
+ (cdt vs. credit), so there is no ambiguity, and this-> is not required.
+4. In step 4, according to the message displayed:
+a. At which statement or line in mainCourseLab.cpp is the default constructor called?
+The default constructor is called at this line:
+Course cs2;
+This is where the default constructor for the Course object cs2 is invoked.
+b. At which statement or line in mainCourseLab.cpp is the destructor called?
+The destructor is called when the object cs2 goes out of scope.
+{
+    Course cs2;
+}
+When this block ends, the cs2 object is destroyed, and the destructor is automatically called.
+5. A class can have more than one constructor. When a single instance is created from the class, how many constructors are invoked?
+When a single instance is created, only one constructor is invoked, which corresponds to the constructor that matches the parameters 
+provided at the time of object creation. In this case, since we're passing three arguments ("System Programming", "Computer Science",
+ and 3), the parameterized constructor with three parameters will be invoked, and only that one constructor will be executed.
+ 6. Which constructor is invoked at declaration statements 22 and 26? 
+In both cases, no custom copy constructor is provided in the Course class. Therefore, the compiler will use a default copy constructor,
+ which performs member-wise copying.
+Line 22 (Course futureYearCS2(cs2);): The default copy constructor is invoked to create futureYearCS2 by copying the values from cs2.
+Line 26 (Course previousYearCS2 = cs2;): This is also copy initialization, and the same default copy constructor is invoked here to copy 
+cs2 into previousYearCS2.
+7. In step 7:
+a. Which statement in mainCourseLab.cpp causes the call of the default constructor?
+The statement that causes the call to the default constructor is:
+cs2Ptr = new Course();
+This line dynamically allocates a Course object using the new operator, and since no parameters are provided, the default constructor is
+ called.
+b. When the pointer cs2Ptr is out of scope, is the object created through the new operator destroyed? If not, provide a solution.
+No, the object created using the new operator is not automatically destroyed when the pointer cs2Ptr goes out of scope. In C++, when I
+ use new to allocate memory dynamically, it is my responsibility to free that memory using the delete operator. Otherwise, it will lead 
+ to a memory leak.
+Solution:
+I need to explicitly delete the object before cs2Ptr goes out of scope by adding the following line before the block ends:
+delete cs2Ptr;
